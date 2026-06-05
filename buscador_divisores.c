@@ -1,26 +1,27 @@
 #include <stdio.h>
+//#include <inttypes.h>  			  //Se incluyo antiguamente por alerta con el tipo de dato %llu en linea 10 en Windows
 
 int main(int argc, char *argv[]) {
 //1.Declaracion de variables globales
-long long numeroIngresado;
+unsigned long long numeroIngresado;  //Usando el tipo de dato nativo para espacios de memoria de 64bits 8bytes
 
-//2.Lògica de bùsqueda
-printf("Ingrese un numero\n");
-	scanf("%lld", &numeroIngresado);
+//2.LÃ²gica de bÃ¹squeda de numeros divisores
+printf("Ingrese un numero entero gigante\n");
+	scanf("%I64u", &numeroIngresado);
 	if(numeroIngresado <= 0) {
-		printf("[ERROR] El numero ingresado debe ser entero positivo mayor a 0.\n");
+		printf("[ERROR] El numero ingresado debe ser entero positivo.\n");
 		return 1;
 	}
-	for(long long i=1; i*i <=numeroIngresado; i++) { 
-		if(numeroIngresado % i == 0) {    //La condicion aplica el criterio de divisor usando el operador de modulo
-			if(i*i != numeroIngresado) {
-				printf("%lld y %lld son divisores\n", i, numeroIngresado / i);
+	for(unsigned long long i=1; i*i <=numeroIngresado; i++) {   //Optimizacion para numeros grandes usando el espejo en i*i
+		if(numeroIngresado % i == 0) {    						//La condicion aplica el criterio de divisor usando el operador de modulo
+			// Si i*i da exactamente el nÃºmero, encontraste el eje del espejo (cuadrado perfecto)
+			if(i*i == numeroIngresado) {
+				printf("%I64u es divisor (cuadrado perfecto)\n", i);
 			}else {
-				// Caso cuadrado perfecto: i y su pareja son iguales (ej: 6 y 6)
-				printf("%lld es divisor\n", i);
+			// Caso cuadrado perfecto: i y su pareja son iguales (ej: 6 * 6)
+				printf("%I64u y %I64u son divisores\n", i, numeroIngresado / i);
 			}
 		}
 	}
 	return 0;
 }
-
